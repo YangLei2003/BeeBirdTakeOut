@@ -3,6 +3,6 @@ yd:
     driver-class-name: com.mysql.jdbc.Driver
     host: localhost
     port: 3306
-    database: ydwm
+    database: yd_take_out
     username: root
-    password: root
+    password: 123456

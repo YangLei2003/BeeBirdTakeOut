@@ -1,5 +1,6 @@
 package com.yundin.service;
 
+import com.yundin.dto.EmployeeDTO;
 import com.yundin.dto.EmployeeLoginDTO;
 import com.yundin.entity.Employee;
 
@@ -11,5 +12,5 @@ public interface EmployeeService {
      * @return
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
-
+    Employee save(EmployeeDTO employeeDTO);//新增员工方法
 }

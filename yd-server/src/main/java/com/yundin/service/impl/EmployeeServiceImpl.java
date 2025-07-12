@@ -1,7 +1,10 @@
 package com.yundin.service.impl;
 
 import com.yundin.constant.MessageConstant;
+import com.yundin.constant.PasswordConstant;
 import com.yundin.constant.StatusConstant;
+import com.yundin.context.BaseContext;
+import com.yundin.dto.EmployeeDTO;
 import com.yundin.dto.EmployeeLoginDTO;
 import com.yundin.entity.Employee;
 import com.yundin.exception.AccountLockedException;
@@ -9,9 +12,12 @@ import com.yundin.exception.AccountNotFoundException;
 import com.yundin.exception.PasswordErrorException;
 import com.yundin.mapper.EmployeeMapper;
 import com.yundin.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -39,8 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         //密码比对
-        // TODO 后期需要进行md5加密，然后再进行比对
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        password=DigestUtils.md5DigestAsHex(password.getBytes());//MD5密码加密
         if (!password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
@@ -55,4 +60,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+//实现类：新增员工
+    public Employee save(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);//属性拷贝,把employeeDTO的属性值拷贝给employee，就不需要再一个一个赋值了
+        employee.setStatus(StatusConstant.ENABLE);
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes( )));
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.insert(employee);
+        return employee;
+    }
 }

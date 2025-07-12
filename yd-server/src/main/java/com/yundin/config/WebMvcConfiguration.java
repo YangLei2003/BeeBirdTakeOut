@@ -52,6 +52,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .apiInfo(apiInfo)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.yundin.controller"))
+                //TODO:包的路径可能有问题
                 .paths(PathSelectors.any())
                 .build();
         return docket;

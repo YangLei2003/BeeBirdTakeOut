@@ -1,6 +1,7 @@
 package com.yundin.controller.admin;
 
 import com.yundin.constant.JwtClaimsConstant;
+import com.yundin.dto.EmployeeDTO;
 import com.yundin.dto.EmployeeLoginDTO;
 import com.yundin.entity.Employee;
 import com.yundin.properties.JwtProperties;
@@ -8,6 +9,8 @@ import com.yundin.result.Result;
 import com.yundin.service.EmployeeService;
 import com.yundin.utils.JwtUtil;
 import com.yundin.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Api(tags="员工相关接口")
 public class EmployeeController {
 
     @Autowired
@@ -38,6 +42,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation("员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
@@ -67,8 +72,20 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @ApiOperation("员工退出")
     public Result<String> logout() {
         return Result.success();
     }
+    @PostMapping
+    //
+    @ApiOperation("新增员工")//ApiOperation用于注解，描述方法的用途
+    //
+    public Result save(@RequestBody EmployeeDTO employeeDTO){//employeeDTO用于传输员工信息数据
+        //传回的数据是json格式，前后端数据格式相差大时。用RequestBody转换
+        log.info("新增员工：{}",employeeDTO);
+        employeeService.save(employeeDTO);
+        return Result.success();//封装数据，都返回result；
+    }
 
 }
+
