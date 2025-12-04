@@ -105,5 +105,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    public void startOrStop(Integer status, Long id) {
+        //为了增强泛用性，不应该只硬性的写status和id。而应该封装为pojo
+        Employee employee = new Employee();
+        employee.setStatus(status);
+        employee.setId(id);
+        employeeMapper.update(employee);
+    }
+
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword("******");
+        return employee;
+    }
+
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
+
 
 }

@@ -28,4 +28,9 @@ public interface EmployeeMapper {
      */
     //注解方式不利于编写动态SQL，写XML里可能更好
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    void update(Employee employee);
+
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Long id);
 }

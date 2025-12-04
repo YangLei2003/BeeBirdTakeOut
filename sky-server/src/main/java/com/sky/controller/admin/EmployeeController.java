@@ -24,7 +24,6 @@ import java.util.Map;
  * 员工管理
  */
 @RestController
-@RequestMapping("/admin/employee")
 @Slf4j
 //这是Swagger的注解，可以把默认生成的接口文档目录改成你自己定义的名字
 @Api(tags="员工相关接口")
@@ -41,7 +40,7 @@ public class EmployeeController {
      * @param employeeLoginDTO
      * @return
      */
-    @PostMapping("/login")
+    @PostMapping("/admin/employee/login")
     //与前者不同，上面那个API注解是作用于类，这个是作用于方法，也就是自定义子目录名字
     @ApiOperation(value="员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -72,7 +71,7 @@ public class EmployeeController {
      *
      * @return
      */
-    @PostMapping("/logout")
+    @PostMapping("/admin/employee/logout")
     @ApiOperation(value="员工退出")
     public Result<String> logout() {
 
@@ -96,5 +95,24 @@ public class EmployeeController {
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
+    @PostMapping("/admin/employee/status/{status}")
+    @ApiOperation("启用/禁用员工账号")
+    public Result startOrStop(@PathVariable Integer status,@RequestParam Long id){
+        log.info("启用禁用员工账号：{},{}",status,id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+@GetMapping("/admin/employee/{id}")
+@ApiOperation("根据id查询员工")
+    public Result<Employee> getById(@PathVariable Long id){
+        Employee employee =employeeService.getById(id);
+        return Result.success(employee);
+    }
 
+    @PutMapping("/admin/employee")
+    @ApiOperation("编辑员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO){//前端传来json格式，要用@RequestBody注解来接收
+     employeeService.update(employeeDTO);
+     return Result.success();
+    }
 }
