@@ -48,7 +48,7 @@ public class JwtUtil {
     public static Claims parseJWT(String secretKey, String token) {
         // 得到DefaultJwtParser
         Claims claims = Jwts.parser()
-                // 设置签名的秘钥
+                // 设置签名的秘钥,告诉解析器使用哪个密钥来验证 JWT 的签名
                 .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
                 // 设置需要解析的jwt
                 .parseClaimsJws(token).getBody();

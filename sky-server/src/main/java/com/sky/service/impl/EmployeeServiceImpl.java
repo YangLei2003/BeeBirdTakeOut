@@ -78,20 +78,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         //对密码进行MD5加密，哪怕是默认的
         //不要直接DEFAULT_PASSWORD,这样会导致import导入一个类进去，有点乱，这样加个类前缀. 就不会
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
          //设置当前记录创建人ID
         //从LocalThread中提取线程中的ID，这个ID是JwtToken设置的ID。看源码
         //每一次执行程序都会创建一个单独的线程ID
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        //employee.setCreateUser(BaseContext.getCurrentId());
+        //employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
     }
 
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-        //开始分页查询
-        //用PageHelper工具
+        //开始分页查询,用PageHelper工具
         //基于LocalThread来本地的传入page和pageSize
         PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
         //这是PageHelper插件的固定写法，得到了一个page对象，就可以对页数和长度进行定义
@@ -122,8 +121,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        //employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.update(employee);
     }
 
